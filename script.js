@@ -1,4 +1,5 @@
-// Task 6: Build Order Lookup Handler
+
+//Task 6: Build Order Lookup Handler
 
 document.addEventListener('DOMContentLoaded', () => {
     const orderForm = document.getElementById('order-form');
