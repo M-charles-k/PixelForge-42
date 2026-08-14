@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ORDER STATUS LOOKUP HANDLER
-  
+  // ==========================================
+  // 1. ORDER STATUS LOOKUP HANDLER
+  // ==========================================
   const orderForm = document.getElementById('order-form');
   if (orderForm) {
     orderForm.addEventListener('submit', async (e) => {
@@ -10,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const orderInput = document.getElementById('order-number')?.value.trim();
       let resultDiv = document.getElementById('order-result');
 
-      
       if (!resultDiv) {
         resultDiv = document.createElement('div');
         resultDiv.id = 'order-result';
@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) throw new Error('Failed to fetch orders dataset');
         const orders = await response.json();
 
-        
-          const matchedOrder = orders.find(
+        const matchedOrder = orders.find(
           (item) => item.OrderId && item.OrderId.toLowerCase() === orderInput.toLowerCase()
         );
 
@@ -59,16 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  //  STOCK SEARCH HANDLER //
-  
+  // ==========================================
+  // 2. STOCK SEARCH HANDLER
+  // ==========================================
   const stockForm = document.getElementById('stock-form');
   if (stockForm) {
     stockForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      /
-          const queryInput = document.getElementById('stock-query')?.value.trim().toLowerCase() || '';
+      const queryInput = document.getElementById('stock-query')?.value.trim().toLowerCase() || '';
       const selectedLocation = document.getElementById('stock-location')?.value || 'all';
 
       let resultDiv = document.getElementById('stock-result');
@@ -79,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!queryInput) {
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 12px;">Please enter a product name or SKU to search.</p>`;
+        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 12px;">Please enter a product name or ID to search.</p>`;
         return;
       }
 
@@ -88,21 +86,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) throw new Error('Failed to fetch inventory dataset');
         const inventory = await response.json();
 
+        // Check against item.id and item.name from inventory.json
         const matches = inventory.filter((item) => {
-          const matchesNameOrSku =
+          const matchesNameOrId =
             (item.name && item.name.toLowerCase().includes(queryInput)) ||
-            (item.sku && item.sku.toLowerCase().includes(queryInput));
+            (item.id && item.id.toLowerCase().includes(queryInput));
 
           const matchesLocation =
             selectedLocation === 'all' || item.location === selectedLocation;
 
-          return matchesNameOrSku && matchesLocation;
+          return matchesNameOrId && matchesLocation;
         });
 
         if (matches.length > 0) {
           let htmlOutput = `<div style="margin-top: 16px;">`;
           matches.forEach((item) => {
-            const isAvailable = item.inStock > 0;
+            const isAvailable = item.stock_count > 0;
             const statusColor = isAvailable ? '#059669' : '#e11d48';
             const badgeBg = isAvailable ? '#ecfdf5' : '#fef2f2';
 
@@ -111,10 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="display: flex; justify-content: space-between; align-items: start;">
                   <div>
                     <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #1e293b;">${item.name}</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #64748b;">SKU: <code>${item.sku}</code> | Location: ${item.location}</p>
+                    <p style="margin: 0; font-size: 0.85rem; color: #64748b;">
+                      ID: <code>${item.id}</code> | Size: ${item.size}
+                    </p>
                   </div>
                   <span style="background-color: ${badgeBg}; color: ${statusColor}; border: 1px solid ${statusColor}; font-weight: 600; font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;">
-                    ${item.status || (isAvailable ? 'In Stock' : 'Out of Stock')} (${item.inStock})
+                    ${isAvailable ? 'In Stock' : 'Out of Stock'} (${item.stock_count})
                   </span>
                 </div>
               </div>
@@ -134,13 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         console.error(err);
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 12px;">Failed to load inventory data.</p>`;
+        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 12px;">Failed to load inventory data. Ensure <code>inventory.json</code> is present.</p>`;
       }
     });
   }
 
-
-document.addEventListener('DOMContentLoaded', () => {
+  // ==========================================
+  // 3. SUPPORT FALLBACK HANDLER
+  // ==========================================
   const fallbackSection = document.getElementById('support-fallback-section');
   const fallbackForm = document.getElementById('support-fallback-form');
   const fallbackConfirmation = document.getElementById('fallback-confirmation');
@@ -185,6 +187,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
-  
 });
