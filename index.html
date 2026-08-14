@@ -3,70 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Support & Inventory Lookup</title>
-  <!-- Replace or include your stylesheet link here -->
+  <title>Customer Support & Inventory | Northstar Retail Co.</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <main style="max-width: 800px; margin: 40px auto; padding: 0 20px; font-family: system-ui, -apple-system, sans-serif;">
-    
-    <h2>Customer Service Portal</h2>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <svg class="brand-logo" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="8" height="8" fill="#1f2a3a"/>
+          <rect x="14" y="2" width="8" height="8" fill="#1f2a3a"/>
+          <rect x="2" y="14" width="8" height="8" fill="#1f2a3a"/>
+          <rect x="14" y="14" width="8" height="8" fill="#1f2a3a"/>
+        </svg>
+        <span class="brand-name">Northstar Retail Co.</span>
+      </a>
+      <nav class="main-nav">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">My Orders</a>
+        <a href="#" class="nav-link">Track Order</a>
+        <a href="#" class="btn btn-teal">Support</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- SECTION 1: ORDER LOOKUP -->
-    <section style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
-      <h3>Check Order Status</h3>
-      <form id="order-form">
-        <div style="margin-bottom: 12px;">
-          <label for="order-number" style="display: block; margin-bottom: 6px; font-weight: 500;">Order ID:</label>
-          <input type="text" id="order-number" placeholder="e.g., ORD-6001" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
-        </div>
-        <button type="submit" class="btn" style="background: #0284c7; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
-          Lookup Order
-        </button>
-      </form>
-      <div id="order-result"></div>
-    </section>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Customer Support</p>
+      <h1>Support Tools</h1>
+      <p class="hero-sub">Track your order, check stock across our warehouse network, or submit a return — all in one place.</p>
+    </div>
+  </section>
 
-    <!-- SECTION 2: STOCK SEARCH -->
-    <section style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
-      <h3>Search Inventory Stock</h3>
-      <form id="stock-form">
-        <div style="margin-bottom: 12px;">
-          <label for="stock-query" style="display: block; margin-bottom: 6px; font-weight: 500;">Product Name or Item ID:</label>
-          <input type="text" id="stock-query" placeholder="e.g., Beanie or ITEM1001" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
-        </div>
-        <button type="submit" class="btn" style="background: #0284c7; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
-          Search Inventory
-        </button>
-      </form>
-      <div id="stock-result"></div>
-    </section>
+  <!-- TOOLS SECTION -->
+  <section class="tools-section">
+    <div class="container">
+      
+      <div class="tools-grid">
+        
+        <!-- TOOL 01: ORDER STATUS LOOKUP -->
+        <article class="tool-card">
+          <div class="tool-card-head">
+            <div>
+              <div class="tool-tag"><span class="dot dot-teal"></span> Tool 01</div>
+              <h2>Order Status Lookup</h2>
+            </div>
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="#8a8f98" stroke-width="1.8">
+              <rect x="1" y="1" width="18" height="14" rx="2"/>
+              <line x1="1" y1="5" x2="19" y2="5"/>
+            </svg>
+          </div>
+          <div class="tool-card-body">
+            <form id="order-form">
+              <div class="field">
+                <label for="order-number">Order number</label>
+                <input type="text" id="order-number" class="input-mono" placeholder="e.g. NSR-12345" required>
+                <p class="hint">Try: NSR-12345 · NSR-67890 · NSR-11111 · NSR-22222</p>
+              </div>
+              <div class="field">
+                <label for="order-email">Email address</label>
+                <input type="email" id="order-email" placeholder="you@example.com" required>
+              </div>
+              <button type="submit" class="btn btn-dark btn-block">Check order status</button>
+            </form>
+            <div id="order-result"></div>
+          </div>
+        </article>
 
-    <!-- SECTION 3: SUPPORT FALLBACK FORM -->
-    <section id="support-fallback-section" style="display: none; background: #fff; border: 2px solid #0d9488; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
-      <h3 style="color: #0f766e; margin-top: 0;">Submit a Support Ticket</h3>
-      <form id="support-fallback-form">
-        <div style="margin-bottom: 12px;">
-          <label for="fallback-email" style="display: block; margin-bottom: 6px; font-weight: 500;">Your Email:</label>
-          <input type="email" id="fallback-email" required placeholder="name@example.com" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;">
-        </div>
-        <div style="margin-bottom: 12px;">
-          <label for="fallback-reason" style="display: block; margin-bottom: 6px; font-weight: 500;">Inquiry Reason:</label>
-          <input type="text" id="fallback-reason" readonly style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background-color: #f1f5f9;">
-        </div>
-        <div style="margin-bottom: 12px;">
-          <label for="fallback-message" style="display: block; margin-bottom: 6px; font-weight: 500;">Details:</label>
-          <textarea id="fallback-message" rows="3" placeholder="Describe your request..." style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;"></textarea>
-        </div>
-        <button type="submit" class="btn btn-teal" style="background: #0d9488; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
-          Submit Ticket
-        </button>
-      </form>
-      <div id="fallback-confirmation" style="display: none;"></div>
-    </section>
+        <!-- TOOL 02: PRODUCT AVAILABILITY -->
+        <article class="tool-card">
+          <div class="tool-card-head">
+            <div>
+              <div class="tool-tag"><span class="dot dot-teal"></span> Tool 02</div>
+              <h2>Product Availability</h2>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#8a8f98" stroke-width="1.8">
+              <rect x="2" y="2" width="14" height="14" rx="2"/>
+              <line x1="2" y1="8" x2="16" y2="8"/>
+            </svg>
+          </div>
+          <div class="tool-card-body">
+            <form id="stock-form">
+              <div class="field">
+                <label for="stock-query">Product name or SKU</label>
+                <input type="text" id="stock-query" class="input-mono" placeholder="e.g. shoes · headphones · ELC-HPH-WNC-01" required>
+                <p class="hint">Try: shoes · jacket · bottle · headphones · APL-PJK-W-OLV-L</p>
+              </div>
+              <div class="field">
+                <label for="stock-location">Store / location</label>
+                <select id="stock-location">
+                  <option value="all">All locations</option>
+                  <option value="nairobi">Nairobi Central</option>
+                  <option value="mombasa">Mombasa Hub</option>
+                  <option value="kisumu">Kisumu Branch</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-dark btn-block">Check stock</button>
+            </form>
+            <div id="stock-result"></div>
+          </div>
+        </article>
 
-  </main>
+      </div>
+
+      <!-- TOOL 03: RETURNS & REFUND REQUEST -->
+      <article class="tool-card tool-wide">
+        <div class="tool-card-head">
+          <div>
+            <div class="tool-tag"><span class="dot dot-orange"></span> Tool 03</div>
+            <h2>Returns & Refund Request</h2>
+          </div>
+          <svg width="18" height="20" viewBox="0 0 18 20" fill="none" stroke="#8a8f98" stroke-width="1.8">
+            <path d="M3 1v18l3-2 3 2 3-2 3 2V1L12 3 9 1 6 3 3 1z"/>
+          </svg>
+        </div>
+        <div class="tool-card-body">
+          <form id="support-fallback-form" class="returns-grid">
+            <div class="field">
+              <label for="fallback-order">Order number</label>
+              <input type="text" id="fallback-order" class="input-mono" placeholder="e.g. 12345" required>
+            </div>
+            <div class="field">
+              <label for="fallback-email">Email address</label>
+              <input type="email" id="fallback-email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="fallback-item">Item to return</label>
+              <input type="text" id="fallback-item" placeholder="e.g. Running Shoes — Men's Sz 42" required>
+            </div>
+            <div class="field">
+              <label for="fallback-reason-select">Reason for return</label>
+              <select id="fallback-reason-select" required>
+                <option value="" disabled selected>Select a reason</option>
+                <option value="defective">Defective / Damaged</option>
+                <option value="wrong-size">Wrong Size</option>
+                <option value="changed-mind">Changed Mind</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fallback-resolution">Preferred resolution</label>
+              <select id="fallback-resolution" required>
+                <option value="" disabled selected>Select preference</option>
+                <option value="refund">Full Refund</option>
+                <option value="exchange">Exchange Item</option>
+                <option value="credit">Store Credit</option>
+              </select>
+            </div>
+            <div class="field field-details">
+              <label for="fallback-message">Additional details <span class="optional">(optional)</span></label>
+              <textarea id="fallback-message" placeholder="Describe the issue, include photos if relevant..."></textarea>
+            </div>
+            <div class="returns-aside">
+              <p class="policy">Returns accepted within <strong>30 days</strong> of delivery. Items must be unused and in original packaging.</p>
+              <button type="submit" class="btn btn-dark btn-block">Submit return request</button>
+            </div>
+          </form>
+          <div id="fallback-confirmation"></div>
+        </div>
+      </article>
+
+      <!-- ROUTING REFERENCE -->
+      <div class="routing-card">
+        <p class="routing-title">Ticket Routing Reference</p>
+        <div class="routing-grid">
+          <div class="routing-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="2" fill="#1e9488"/><path d="M6 10l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <h3>Order-status queries</h3>
+              <p>Tool 01 — Order Status Lookup</p>
+            </div>
+          </div>
+          <div class="routing-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="2" fill="#1e9488"/><path d="M6 10l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <h3>Stock-availability queries</h3>
+              <p>Tool 02 — Product Availability</p>
+            </div>
+          </div>
+          <div class="routing-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect width="20" height="20" rx="2" fill="#1e9488"/><path d="M6 10l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <h3>Returns & refund requests</h3>
+              <p>Tool 03 — Returns & Refund Request</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section">
+    <div class="container">
+      <p class="eyebrow">Help Centre</p>
+      <h2 class="faq-head">Frequently asked questions</h2>
+      
+      <div class="faq-grid">
+        <button class="faq-item"><span>How long does delivery take?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>How do I track my order?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>What is your returns window?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>How long does a refund take to process?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>Can I change or cancel my order after placing it?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>Do you offer Cash on Delivery?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>My item arrived damaged — what do I do?</span><span class="faq-icon">+</span></button>
+        <button class="faq-item"><span>Is a product available in my nearest store?</span><span class="faq-icon">+</span></button>
+      </div>
+
+      <div class="contact-banner">
+        <p>Still need help? Our support team is available <strong>Mon–Sat, 8 AM – 8 PM EAT</strong>.</p>
+        <a href="#support-fallback-form" class="btn btn-teal">Contact support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="brand">
+            <svg class="brand-logo" width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="8" height="8" fill="#1f2a3a"/><rect x="14" y="2" width="8" height="8" fill="#1f2a3a"/><rect x="2" y="14" width="8" height="8" fill="#1f2a3a"/><rect x="14" y="14" width="8" height="8" fill="#1f2a3a"/></svg>
+            <span class="brand-name">Northstar Retail Co.</span>
+          </a>
+          <p>Delivering quality products across East Africa. Fast shipping, easy returns, genuine goods.</p>
+          <div class="socials">
+            <button class="social-btn">IG</button>
+            <button class="social-btn">X</button>
+            <button class="social-btn">FB</button>
+            <button class="social-btn">TK</button>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <a href="#">New arrivals</a>
+          <a href="#">Men's clothing</a>
+          <a href="#">Women's clothing</a>
+          <a href="#">Footwear</a>
+          <a href="#">Electronics</a>
+          <a href="#">Accessories</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <a href="#">Contact support</a>
+          <a href="#">Track my order</a>
+          <a href="#">Returns & refunds</a>
+          <a href="#">Size guide</a>
+          <a href="#">FAQs</a>
+          <a href="#">Store locator</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About us</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+          <a href="#">Sustainability</a>
+          <a href="#">Affiliate programme</a>
+          <a href="#">Privacy notice</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <a href="#">Terms of use</a>
+          <a href="#">Returns policy</a>
+          <a href="#">Cookie settings</a>
+        </div>
+        <p>©️ 2026 Northstar Retail Co. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
