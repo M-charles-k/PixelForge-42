@@ -1,4 +1,4 @@
-# Northstar Retail Co. — Customer Support & Stock Checker Portal
+# Northstar Retail Co. - Customer Support & Stock Checker Portal
 
 A web application built for Northstar Retail Co. to streamline customer self-service, order tracking, store inventory lookups, and automated support ticket routing.
 
