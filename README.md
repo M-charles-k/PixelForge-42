@@ -97,6 +97,6 @@ group-42/
 * **alishiamungai**
 * **BRAVO**
 * **Sandra**
-* **char**
+* **charles**
 * **George Eipa** (Me)
 *
