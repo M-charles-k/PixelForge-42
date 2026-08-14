@@ -9,6 +9,8 @@ A web application built for Northstar Retail Co. to streamline customer self-ser
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Local Setup Instructions](#-local-setup-instructions)
+- [Folder Structure](#-folder-structure)
+- [Contributors](#-contributors)
 
 ---
 
@@ -62,5 +64,39 @@ By unifying order lookups, inventory search, and ticket routing into a single in
 
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/your-username/repository-name.git](https://github.com/your-username/repository-name.git)
-   cd repository-name
+   git clone https://github.com
+   cd group-42
+   ```
+
+2. **Run Locally:**
+   * Open the folder in VS Code.
+   * Right-click `index.html` and select **Open with Live Server**.
+   * Alternatively, use Python in your terminal:
+     ```bash
+     python -m http.server 8000
+     ```
+   * Open `http://localhost:8000` in your web browser.
+
+---
+
+## 📂 Folder Structure
+
+```text
+group-42/
+├── index.html          # Main application portal structure
+├── styles.css          # Core layouts, styles, and mobile media queries
+├── app.js              # Application logic, data fetching, and form validation
+├── orders.json         # Mock database for customer order tracking
+└── inventory.json      # Mock database for store product inventory
+```
+
+---
+
+## 👥 Contributors
+
+* **alishiamungai**
+* **BRAVO**
+* **Sandra**
+* **char**
+* **George Eipa** (Me)
+*
