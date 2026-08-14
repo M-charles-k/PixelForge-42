@@ -29,3 +29,10 @@
 ## 7. Final Submission
 - One member is designated to do the final compile/check before submission (confirm this person in advance).
 - Double-check all files are uploaded to GitHub and any required document (e.g. Word/PDF report) is finalized before the deadline.
+
+## 8. Escalation Workflow
+- Step 1: Direct Outreach (Internal): Reach out directly to the teammate via group chat or direct message. Clearly state what is needed (e.g., "We need your Task 1 update pushed so we can link it").
+
+- Step 2: Team Notification (Internal): If there is no response within 24 hours, tag the member in the main team channel and reassign or divide critical blocking tasks among active members to protect the deadline.
+
+- Step 3: Mentor / Instructor Escalation (External): If a member remains inactive for 48 hours or refuses to follow project guidelines, notify the Program Lead / Mentor with screenshot proof of communication attempts for formal review.
