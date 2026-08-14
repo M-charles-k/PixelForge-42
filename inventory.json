@@ -1,0 +1,32 @@
+[
+{
+"id": "ITEM1001",
+"name": "Merino Wool Beanie",
+"stock_count": 88,
+"size": "Size Two"    
+},
+{
+"id": "ITEM1002",
+"name": "Canvas High-Top Sneakers",
+"stock_count": 0,
+"size": 30    
+},
+{
+"id": "ITEM1003",
+"name": "Brown Leather Handbag",
+"stock_count": 1,
+"size": "Small"
+},
+{
+"id": "ITEM1004",
+"name": "White Cotton T-Shirt",
+"stock_count": 100,
+"size": "L"
+},
+{
+"id": "ITEM1005",
+"name": "Blue Denim Jeans",
+"stock_count": 37,
+"size": "32"
+}    
+]
