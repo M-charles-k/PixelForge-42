@@ -176,5 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
+// ==========================================
+  // 4. FAQ ACCORDION TOGGLE
+  // ==========================================
+  const faqButtons = document.querySelectorAll('.faq-question');
+  faqButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const faqItem = btn.parentElement;
+      faqItem.classList.toggle('active');
+      
+      const icon = btn.querySelector('.faq-icon');
+      if (icon) {
+        icon.textContent = faqItem.classList.contains('active') ? '×' : '+';
+      }
+    });
+  });
 });
