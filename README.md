@@ -9,8 +9,6 @@ A web application built for Northstar Retail Co. to streamline customer self-ser
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Local Setup Instructions](#-local-setup-instructions)
-- [Folder Structure](#-folder-structure)
-- [Contributors](#-contributors)
 
 ---
 
