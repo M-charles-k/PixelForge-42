@@ -1,17 +1,17 @@
 /* ============ DESIGN TOKENS ============ */
 :root {
-  --ink: #1f2a3a; /* headings / dark buttons */
+  --ink: #1f2a3a;
   --ink-dark: #1f2937;
-  --muted: #6b7280; /* secondary text */
-  --muted-2: #8a8f98; /* placeholders */
-  --teal: #1e9488; /* brand accent */
+  --muted: #6b7280;
+  --muted-2: #8a8f98;
+  --teal: #1e9488;
   --teal-dark: #17806f;
-  --orange: #f59e0b; /* tool 03 dot */
-  --bg: #f7f8fa; /* header / hero / footer */
-  --bg-alt: #ececec; /* tools + faq sections */
-  --card: #f8f9fa; /* cards */
-  --line: #d6d6d8; /* card borders */
-  --line-soft: #e4e4e6; /* section dividers */
+  --orange: #f59e0b;
+  --bg: #f7f8fa;
+  --bg-alt: #ececec;
+  --card: #f8f9fa;
+  --line: #d6d6d8;
+  --line-soft: #e4e4e6;
   --input-bg: #ececec;
   --input-line: #c7c7c9;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
@@ -24,9 +24,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-html {
-  -webkit-text-size-adjust: 100%;
 }
 body {
   font-family: var(--font-sans);
@@ -51,10 +48,12 @@ textarea {
   font: inherit;
 }
 
+/* One shared container => perfect left/right alignment everywhere */
 .container {
-  max-width: 1440px;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 56px;
+  padding: 0 64px;
 }
 
 /* ============ BUTTONS ============ */
@@ -83,7 +82,7 @@ textarea {
   background: var(--ink-dark);
   color: #fff;
   border-radius: 0;
-  padding: 16px 20px;
+  padding: 17px 20px;
 }
 .btn-dark:hover {
   background: #2b3a4e;
@@ -101,13 +100,16 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 56px;
-  max-width: 1560px;
+  padding-top: 36px;
+  padding-bottom: 36px; /* horizontal padding inherited from .container */
 }
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 16px;
+}
+.brand-logo {
+  flex-shrink: 0;
 }
 .brand-name {
   font-family: var(--font-disp);
@@ -118,7 +120,7 @@ textarea {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 44px;
+  gap: 46px;
 }
 .nav-link {
   color: var(--muted);
@@ -130,7 +132,7 @@ textarea {
 
 /* ============ HERO ============ */
 .hero {
-  padding: 76px 0 88px;
+  padding: 96px 0 88px;
   border-bottom: 1px solid var(--line-soft);
 }
 .eyebrow {
@@ -139,7 +141,7 @@ textarea {
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--teal);
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 .hero h1 {
   font-family: var(--font-disp);
@@ -148,21 +150,26 @@ textarea {
   letter-spacing: -0.5px;
 }
 .hero-sub {
-  margin-top: 16px;
+  margin-top: 18px;
   font-size: 19px;
   color: var(--muted);
 }
 
-/* ============ TOOLS SECTION ============ */
+/* ============ TOOLS + FAQ : one continuous gray band ============ */
 .tools-section {
   background: var(--bg-alt);
-  padding: 68px 0 76px;
+  padding: 88px 0 0;
 }
+.faq-section {
+  background: var(--bg-alt);
+  padding: 96px 0 104px;
+}
+
 .tools-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 46px;
-  margin-bottom: 46px;
+  gap: 48px;
+  margin-bottom: 48px;
 }
 
 .tool-card {
@@ -175,8 +182,12 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 30px 34px;
+  padding: 32px 34px;
   border-bottom: 1px solid var(--line);
+}
+.tool-card-head svg {
+  flex-shrink: 0;
+  margin-top: 6px;
 }
 .tool-tag {
   display: flex;
@@ -210,12 +221,12 @@ textarea {
   padding: 34px;
 }
 .tool-wide {
-  margin-bottom: 46px;
+  margin-bottom: 48px;
 }
 
 /* ---- form elements ---- */
 .field {
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 .field label {
   display: block;
@@ -233,7 +244,7 @@ input,
 select,
 textarea {
   width: 100%;
-  padding: 15px 16px;
+  padding: 16px 18px;
   font-size: 16px;
   color: var(--ink);
   background: var(--input-bg);
@@ -258,10 +269,10 @@ textarea:focus {
 select {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: 46px;
+  padding-right: 48px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%236b7280' stroke-width='1.8'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
+  background-position: right 18px center;
 }
 textarea {
   min-height: 150px;
@@ -277,7 +288,7 @@ textarea {
 .returns-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 26px 34px;
+  gap: 28px 34px;
 }
 .field-details {
   grid-column: 1 / 3;
@@ -304,7 +315,7 @@ textarea {
 .routing-card {
   background: var(--card);
   border: 1px solid var(--line);
-  padding: 30px 34px;
+  padding: 32px 34px;
 }
 .routing-title {
   font-family: var(--font-mono);
@@ -312,7 +323,7 @@ textarea {
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 .routing-grid {
   display: grid;
@@ -323,6 +334,10 @@ textarea {
   display: flex;
   align-items: flex-start;
   gap: 14px;
+}
+.routing-item svg {
+  flex-shrink: 0;
+  margin-top: 3px;
 }
 .routing-item h3 {
   font-size: 17.5px;
@@ -335,11 +350,6 @@ textarea {
 }
 
 /* ============ FAQ ============ */
-.faq-section {
-  background: var(--bg-alt);
-  padding: 76px 0 84px;
-  border-top: 1px solid var(--line-soft);
-}
 .faq-head {
   font-family: var(--font-disp);
   font-weight: 700;
@@ -349,28 +359,23 @@ textarea {
 .faq-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 6px;
-  margin-top: 44px;
-}
-.faq-col {
-  background: var(--card);
+  gap: 2px;
+  background: var(--line);
   border: 1px solid var(--line);
+  margin-top: 48px;
 }
 .faq-item {
-  width: 100%;
+  background: var(--card);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  padding: 27px 30px;
+  padding: 28px 32px;
   text-align: left;
   font-family: var(--font-disp);
   font-weight: 500;
   font-size: 19px;
   color: var(--ink);
-}
-.faq-item + .faq-item {
-  border-top: 1px solid var(--line);
 }
 .faq-item:hover {
   background: #f1f2f4;
@@ -383,10 +388,10 @@ textarea {
 }
 
 .contact-banner {
-  margin-top: 44px;
+  margin-top: 48px;
   background: var(--card);
   border: 1px solid var(--line);
-  padding: 28px 32px;
+  padding: 30px 34px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -405,7 +410,7 @@ textarea {
 .site-footer {
   background: var(--bg);
   border-top: 1px solid var(--line-soft);
-  padding: 76px 0 68px;
+  padding-top: 80px;
 }
 .footer-grid {
   display: grid;
@@ -413,7 +418,7 @@ textarea {
   gap: 56px;
 }
 .footer-brand p {
-  margin: 24px 0 28px;
+  margin: 26px 0 30px;
   max-width: 330px;
   color: var(--muted);
   line-height: 1.7;
@@ -449,9 +454,28 @@ textarea {
   display: block;
   color: #4b5563;
   font-size: 16.5px;
-  margin-bottom: 20px;
+  margin-bottom: 19px;
 }
 .footer-col a:hover {
+  color: var(--ink);
+}
+
+.footer-bottom {
+  margin-top: 72px;
+  border-top: 1px solid var(--line-soft);
+  padding: 28px 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.footer-legal {
+  display: flex;
+  gap: 36px;
+}
+.footer-legal a:hover {
   color: var(--ink);
 }
 
@@ -477,18 +501,31 @@ textarea {
     padding: 0 28px;
   }
   .header-inner {
-    padding: 22px 28px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+  .hero {
+    padding: 64px 0 60px;
+  }
+  .tools-section {
+    padding-top: 60px;
+  }
+  .faq-section {
+    padding: 72px 0 76px;
   }
   .tools-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+    margin-bottom: 32px;
+  }
+  .tool-wide {
+    margin-bottom: 32px;
   }
   .returns-grid {
     grid-template-columns: 1fr;
   }
   .faq-grid {
     grid-template-columns: 1fr;
-    gap: 6px 0;
   }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -498,13 +535,16 @@ textarea {
     flex-direction: column;
     align-items: flex-start;
   }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 48px;
+  }
 }
 @media (max-width: 620px) {
   .container {
     padding: 0 20px;
-  }
-  .header-inner {
-    padding: 18px 20px;
   }
   .main-nav {
     gap: 20px;
@@ -518,5 +558,9 @@ textarea {
   .tool-card-head,
   .tool-card-body {
     padding: 24px;
+  }
+  .footer-legal {
+    flex-wrap: wrap;
+    gap: 18px;
   }
 }
