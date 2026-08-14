@@ -1127,3 +1127,43 @@ textarea {
     gap: 18px;
   }
 }
+
+/* ==========================================================================
+   TASK 9: MOBILE RESPONSIVENESS & SINGLE-COLUMN CARD VIEW (BREAKPOINT: 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  
+  /* 1. Fix container padding so elements don't get squished or cause overflow */
+  .container {
+    padding: 0 16px !important; 
+  }
+
+  /* 2. Force grid layouts into a single column */
+  .grid, 
+  [class*="grid"], 
+  [class*="card-container"] {
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* Forces 1 card per row */
+    gap: 16px !important;
+  }
+
+  /* 3. Force flexbox layouts (like side-by-side rows) to stack vertically */
+  .row, 
+  .flex-row,
+  [class*="flex"] {
+    flex-direction: column !important;
+  }
+
+  /* 4. Ensure individual cards scale beautifully to full width */
+  .card, 
+  [class*="card"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 5. Prevent elements or images from spilling over the screen edges */
+  img, table, form, input {
+    max-width: 100% !important;
+  }
+}
