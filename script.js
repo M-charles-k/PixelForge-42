@@ -138,4 +138,53 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fallbackSection = document.getElementById('support-fallback-section');
+  const fallbackForm = document.getElementById('support-fallback-form');
+  const fallbackConfirmation = document.getElementById('fallback-confirmation');
+
+  // Trigger function called on failure or direct support clicks
+  window.showSupportFallback = (reason = '') => {
+    if (!fallbackSection) return;
+    fallbackSection.style.display = 'block';
+    if (reason) {
+      const reasonInput = document.getElementById('fallback-reason');
+      if (reasonInput) reasonInput.value = reason;
+    }
+    fallbackSection.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Attach click events to help buttons
+  document.querySelectorAll('.need-help-btn, .contact-support-link').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSupportFallback('Customer requested direct support assistance.');
+    });
+  });
+
+  // Handle support ticket submission
+  if (fallbackForm) {
+    fallbackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ticketId = 'NSR-TKT-' + Math.floor(100000 + Math.random() * 900000);
+      const userEmail = document.getElementById('fallback-email')?.value || 'Customer';
+
+      fallbackForm.reset();
+      fallbackForm.style.display = 'none';
+
+      if (fallbackConfirmation) {
+        fallbackConfirmation.style.display = 'block';
+        fallbackConfirmation.innerHTML = `
+          <div style="background-color: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 16px; border-radius: 8px; margin-top: 12px;">
+            <h4 style="margin: 0 0 4px 0; font-weight: bold;">Ticket Submitted Successfully!</h4>
+            <p style="margin: 0; font-size: 0.9rem;">Thank you, <strong>${userEmail}</strong>. Reference ID: <strong>${ticketId}</strong>. Our team will get back to you within 24 hours.</p>
+          </div>
+        `;
+      }
+    });
+  }
+});
+  
 });
