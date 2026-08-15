@@ -258,7 +258,7 @@ textarea {
 }
 
 .dot-orange {
-  background: #10b961;
+  background: var(--teal)
 }
 
 .tool-card-head h2 {
