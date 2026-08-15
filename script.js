@@ -90,6 +90,4 @@ const faqQuestions = document.querySelectorAll(".faq-question");
     });
   });
 
-})
-
 });
