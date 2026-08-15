@@ -365,6 +365,24 @@ textarea {
   margin-bottom: 0;
 }
 
+/* 1. Hide answers by default */
+.faq-answer {
+  display: none;
+  padding: 12px 16px;
+  color: #333;
+}
+
+/* 2. Show the answer when parent has the .active class */
+.faq-item.active .faq-answer {
+  display: block;
+}
+
+/* 3. Optional: Change + to - or rotate icon when active */
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
 .returns-aside {
   grid-column: 3;
   grid-row: 3;
