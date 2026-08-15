@@ -1,194 +1,154 @@
-document.addEventListener('DOMContentLoaded', () => {
 
-  // ==========================================
-  // 1. TOOL 01: ORDER STATUS LOOKUP HANDLER
-  // ==========================================
-  const orderForm = document.getElementById('order-form');
-  if (orderForm) {
-    orderForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+// 1. SAMPLE 
+const inventory = [
+  { id: "P001", productName: "Laptop Pro 15", category: "Electronics", location: "Nairobi", price: "$850", status: "In Stock" },
+  { id: "P002", productName: "Wireless Mouse", category: "Accessories", location: "Mombasa", price: "$25", status: "In Stock" },
+  { id: "P003", productName: "Mechanical Keyboard", category: "Accessories", location: "Nairobi", price: "$75", status: "In Stock" },
+  { id: "P004", productName: "27-inch Monitor", category: "Electronics", location: "Kisumu", price: "$300", status: "Low Stock" },
+  { id: "P005", productName: "USB-C Hub Adapter", category: "Accessories", location: "Nairobi", price: "$40", status: "In Stock" }
+];
 
-      const orderInput = document.getElementById('order-number')?.value.trim();
-      const emailInput = document.getElementById('order-email')?.value.trim();
-      let resultDiv = document.getElementById('order-result');
+// GUARANTEED SEARCH ALGORITHM
 
-      if (!resultDiv) {
-        resultDiv = document.createElement('div');
-        resultDiv.id = 'order-result';
-        orderForm.appendChild(resultDiv);
-      }
+function searchInventory(userInput, dataList) {
+  const rawQuery = userInput.toLowerCase().trim();
 
-      if (!orderInput || !emailInput) {
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 16px; font-size: 14.5px;">Please enter both order number and email address.</p>`;
-        return;
-      }
+  // If query is empty, return empty set
+  if (!rawQuery) {
+    return { isFallback: false, items: [] };
+  }
 
-      try {
-        const response = await fetch('orders.json');
-        if (!response.ok) throw new Error('Failed to fetch orders dataset');
-        const orders = await response.json();
+  // Split query into individual search terms (e.g. "laptop nairobi" -> ["laptop", "nairobi"])
+  const queryTokens = rawQuery.split(/\s+/);
 
-        // Standardize input matching for NSR- format or ORD- format
-        const cleanQuery = orderInput.replace(/^NSR-?/i, 'ORD-').toLowerCase();
+  //  Strict/Partial Match - Matches items where ALL tokens match name, category, or location
+  let results = dataList.filter(item => {
+    const itemText = `${item.productName} ${item.category} ${item.location}`.toLowerCase();
+    return queryTokens.every(token => itemText.includes(token));
+  });
 
-        const matchedOrder = orders.find(
-          (item) => item.OrderId && (
-            item.OrderId.toLowerCase() === orderInput.toLowerCase() ||
-            item.OrderId.toLowerCase() === cleanQuery
-          )
-        );
-
-        if (matchedOrder) {
-          resultDiv.innerHTML = `
-            <div style="border: 1px solid #10b981; background-color: #ecfdf5; border-radius: 4px; padding: 16px; margin-top: 20px;">
-              <h4 style="margin: 0 0 6px 0; color: #065f46; font-size: 16px;">Order Found: ${orderInput.toUpperCase()}</h4>
-              <p style="margin: 0 0 8px 0; color: #047857; font-size: 14.5px;">Status: <strong>${matchedOrder.Status}</strong></p>
-              <a href="${matchedOrder.Tracking_link}" target="_blank" style="color: #059669; font-weight: 600; text-decoration: underline; font-size: 14px;">
-                Track Package →
-              </a>
-            </div>
-          `;
-        } else {
-          resultDiv.innerHTML = `
-            <div style="margin-top: 20px; border: 1px solid #fca5a5; background-color: #fef2f2; border-radius: 4px; padding: 16px;">
-              <p style="color: #991b1b; margin: 0 0 8px 0; font-size: 14.5px;">Order "<strong>${orderInput}</strong>" not found for ${emailInput}.</p>
-              <a href="#support-fallback-form" class="btn btn-teal" style="font-size: 13.5px; padding: 8px 14px; display: inline-block;">
-                Submit Support Ticket
-              </a>
-            </div>
-          `;
-        }
-      } catch (err) {
-        console.error(err);
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 16px; font-size: 14.5px;">Error loading orders data. Ensure <code>orders.json</code> is present.</p>`;
-      }
+  //  Broad Match - If strict match fails, match items containing ANY of the terms
+  if (results.length === 0) {
+    results = dataList.filter(item => {
+      const itemText = `${item.productName} ${item.category} ${item.location}`.toLowerCase();
+      return queryTokens.some(token => itemText.includes(token));
     });
   }
 
-  // ==========================================
-  // 2. TOOL 02: PRODUCT AVAILABILITY HANDLER
-  // ==========================================
-  const stockForm = document.getElementById('stock-form');
-  if (stockForm) {
-    stockForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  // Location Match - Check if any word matches a city/location name specifically
+  if (results.length === 0) {
+    const matchedLocation = queryTokens.find(token =>
+      dataList.some(item => item.location.toLowerCase().includes(token))
+    );
 
-      const queryInput = document.getElementById('stock-query')?.value.trim().toLowerCase() || '';
-      const selectedLocation = document.getElementById('stock-location')?.value || 'all';
-
-      let resultDiv = document.getElementById('stock-result');
-      if (!resultDiv) {
-        resultDiv = document.createElement('div');
-        resultDiv.id = 'stock-result';
-        stockForm.appendChild(resultDiv);
-      }
-
-      if (!queryInput) {
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 16px; font-size: 14.5px;">Please enter a product name or SKU.</p>`;
-        return;
-      }
-
-      try {
-        const response = await fetch('inventory.json');
-        if (!response.ok) throw new Error('Failed to fetch inventory dataset');
-        const inventory = await response.json();
-
-        const matches = inventory.filter((item) => {
-          const matchesNameOrId =
-            (item.name && item.name.toLowerCase().includes(queryInput)) ||
-            (item.id && item.id.toLowerCase().includes(queryInput));
-
-          const matchesLocation =
-            selectedLocation === 'all' || (item.location && item.location.toLowerCase() === selectedLocation);
-
-          return matchesNameOrId && matchesLocation;
-        });
-
-        if (matches.length > 0) {
-          let htmlOutput = `<div style="margin-top: 20px;">`;
-          matches.forEach((item) => {
-            const isAvailable = item.stock_count > 0;
-            const statusColor = isAvailable ? '#059669' : '#e11d48';
-            const badgeBg = isAvailable ? '#ecfdf5' : '#fef2f2';
-
-            htmlOutput += `
-              <div style="border: 1px solid var(--line); border-radius: 4px; padding: 14px 18px; margin-bottom: 12px; background-color: #ffffff;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                  <div>
-                    <h4 style="margin: 0 0 4px 0; font-size: 16px; color: var(--ink);">${item.name}</h4>
-                    <p style="margin: 0; font-size: 13.5px; color: var(--muted);">
-                      SKU: <code style="font-family: var(--font-mono);">${item.id}</code> | Size: ${item.size}
-                    </p>
-                  </div>
-                  <span style="background-color: ${badgeBg}; color: ${statusColor}; border: 1px solid ${statusColor}; font-weight: 600; font-size: 12.5px; padding: 4px 8px; border-radius: 2px;">
-                    ${isAvailable ? 'In Stock' : 'Out of Stock'} (${item.stock_count})
-                  </span>
-                </div>
-              </div>
-            `;
-          });
-          htmlOutput += `</div>`;
-          resultDiv.innerHTML = htmlOutput;
-        } else {
-          resultDiv.innerHTML = `
-            <div style="margin-top: 20px;">
-              <p style="color: var(--muted); font-style: italic; margin-bottom: 10px; font-size: 14.5px;">No products found matching "${queryInput}".</p>
-              <a href="#support-fallback-form" class="btn btn-teal" style="font-size: 13.5px; padding: 8px 14px; display: inline-block;">
-                Ask Support to Check Stock
-              </a>
-            </div>
-          `;
-        }
-      } catch (err) {
-        console.error(err);
-        resultDiv.innerHTML = `<p style="color: #e11d48; margin-top: 16px; font-size: 14.5px;">Failed to load inventory dataset. Ensure <code>inventory.json</code> is present.</p>`;
-      }
-    });
+    if (matchedLocation) {
+      results = dataList.filter(item => item.location.toLowerCase().includes(matchedLocation));
+    }
   }
 
-  // ==========================================
-  // 3. TOOL 03: RETURNS & REFUND FORM HANDLER
-  // ==========================================
-  const fallbackForm = document.getElementById('support-fallback-form');
-  const fallbackConfirmation = document.getElementById('fallback-confirmation');
+  //  Guaranteed Fallback - Show top featured items so the page is never blank
+  if (results.length === 0) {
+    return {
+      isFallback: true,
+      message: "No exact match found for your search. Here are popular products available:",
+      items: dataList.slice(0, 3)
+    };
+  }
 
-  if (fallbackForm) {
-    fallbackForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const ticketId = 'NSR-RET-' + Math.floor(100000 + Math.random() * 900000);
-      const userEmail = document.getElementById('fallback-email')?.value || 'Customer';
-      const orderNum = document.getElementById('fallback-order')?.value || 'N/A';
+  return {
+    isFallback: false,
+    items: results
+  };
+}
 
-      fallbackForm.reset();
+function renderProducts(searchResult, containerElement) {
+  containerElement.innerHTML = "";
 
-      if (fallbackConfirmation) {
-        fallbackConfirmation.style.display = 'block';
-        fallbackConfirmation.innerHTML = `
-          <div style="background-color: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 20px; border-radius: 4px; margin-top: 24px;">
-            <h4 style="margin: 0 0 6px 0; font-weight: 700; font-size: 17px;">Return Request Submitted!</h4>
-            <p style="margin: 0; font-size: 14.5px; line-height: 1.6;">
-              Thank you! We received the request for Order <strong>${orderNum}</strong> (${userEmail}). 
-              Reference ID: <strong>${ticketId}</strong>. A support manager will inspect and update you within 24 hours.
-            </p>
+  // Show friendly notification if using fallback recommendations
+  if (searchResult.isFallback) {
+    const notice = document.createElement("div");
+    notice.className = "hint";
+    notice.style.marginBottom = "16px";
+    notice.style.color = "var(--orange)";
+    notice.style.fontWeight = "500";
+    notice.textContent = searchResult.message;
+    containerElement.appendChild(notice);
+  }
+
+  if (searchResult.items.length === 0) {
+    containerElement.innerHTML = `<p class="hint">Please enter a product name or location to search.</p>`;
+    return;
+  }
+
+  // Build product cards grid
+  searchResult.items.forEach(product => {
+    const card = document.createElement("div");
+    card.className = "tool-card";
+    card.innerHTML = `
+      <div class="tool-card-head">
+        <div>
+          <div class="tool-tag">
+            <span class="dot ${product.status === 'In Stock' ? 'dot-teal' : 'dot-orange'}"></span>
+            ${product.status}
           </div>
-        `;
+          <h2>${product.productName}</h2>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <p><strong>Category:</strong> ${product.category}</p>
+        <p><strong>Location:</strong> ${product.location}</p>
+        <p><strong>Price:</strong> ${product.price}</p>
+      </div>
+    `;
+    containerElement.appendChild(card);
+  });
+}
+
+// ==========================================
+// 4. EVENT LISTENERS & INITIALIZATION
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  // --- SEARCH FORM HANDLER ---
+  const searchForm = document.querySelector("#search-form") || document.querySelector("form");
+  const searchInput = document.querySelector("#search-input") || document.querySelector("input[type='text']");
+  const resultsContainer = document.querySelector("#results-container") || document.querySelector(".tools-grid");
+
+  if (searchInput && resultsContainer) {
+    // Real-time search feedback as the user types
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value;
+      if (query.trim().length > 0) {
+        const searchResult = searchInventory(query, inventory);
+        renderProducts(searchResult, resultsContainer);
       }
     });
+
+    // Handle full form submission / enter key
+    if (searchForm) {
+      searchForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const searchResult = searchInventory(searchInput.value, inventory);
+        renderProducts(searchResult, resultsContainer);
+      });
+    }
   }
-// ==========================================
-  // 4. FAQ ACCORDION TOGGLE
-  // ==========================================
-  const faqButtons = document.querySelectorAll('.faq-question');
-  faqButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const faqItem = btn.parentElement;
-      faqItem.classList.toggle('active');
+
+  // --- FAQ ACCORDION TOGGLE HANDLER ---
+  const faqQuestions = document.querySelectorAll(".faq-question");
+
+  faqQuestions.forEach(question => {
+    question.addEventListener("click", () => {
+      const faqItem = question.closest(".faq-item");
       
-      const icon = btn.querySelector('.faq-icon');
-      if (icon) {
-        icon.textContent = faqItem.classList.contains('active') ? '×' : '+';
-      }
+      // Close all other accordions for clean accordion behavior
+      document.querySelectorAll(".faq-item").forEach(item => {
+        if (item !== faqItem) {
+          item.classList.remove("active");
+        }
+      });
+
+      // Toggle current accordion state
+      faqItem.classList.toggle("active");
     });
   });
 });
