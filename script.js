@@ -108,20 +108,36 @@ function renderProducts(searchResult, containerElement) {
 // 4. EVENT LISTENERS & INITIALIZATION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // --- SEARCH FORM HANDLER ---
   const searchForm = document.querySelector("#search-form") || document.querySelector("form");
   const searchInput = document.querySelector("#search-input") || document.querySelector("input[type='text']");
   const resultsContainer = document.querySelector("#results-container") || document.querySelector(".tools-grid");
 
-  if (searchInput && resultsContainer) {
-    // Real-time search feedback as the user types
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value;
-      if (query.trim().length > 0) {
-        const searchResult = searchInventory(query, inventory);
-        renderProducts(searchResult, resultsContainer);
+  if (searchForm) {
+    // 1. PREVENT PAGE RELOAD
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault(); // Prevents the browser from jumping or refreshing the page
+
+      const query = searchInput ? searchInput.value.trim() : "";
+
+      // 2. CHECK FOR EMPTY INPUT
+      if (!query) {
+        alert("Please enter a product name or location before searching.");
+        return;
       }
+
+      // Execute search
+      const searchResult = searchInventory(query, inventory);
+
+      // 3. ALERT USER IF NOTHING IS FOUND OR OUT OF STOCK
+      if (searchResult.isFallback) {
+        alert(`No exact match found for "${query}". Displaying available products instead.`);
+      }
+
+      // Render updated results smoothly without page reload
+      renderProducts(searchResult, resultsContainer);
     });
+  }
+});
 
     // Handle full form submission / enter key
     if (searchForm) {
