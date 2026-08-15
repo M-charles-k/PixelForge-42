@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // 3. TOOL 03: RETURNS & REFUND REQUEST
+  //  TOOL 03: RETURNS & REFUND REQUEST
   // ==========================================
   const fallbackForm = document.getElementById("support-fallback-form");
   const fallbackConfirmation = document.getElementById("fallback-confirmation");
@@ -69,5 +69,27 @@ document.addEventListener("DOMContentLoaded", () => {
       fallbackForm.reset();
     });
   }
+  // FAQ Accordion Toggle Listener
+const faqQuestions = document.querySelectorAll(".faq-question");
+
+  faqQuestions.forEach((button) => {
+    button.addEventListener("click", () => {
+      const faqItem = button.closest(".faq-item");
+
+      // Optional: Close other open accordion items for a clean UI
+      document.querySelectorAll(".faq-item").forEach((item) => {
+        if (item !== faqItem) {
+          item.classList.remove("active");
+        }
+      });
+
+      // Toggle the active class on the clicked item
+      if (faqItem) {
+        faqItem.classList.toggle("active");
+      }
+    });
+  });
+
+})
 
 });
