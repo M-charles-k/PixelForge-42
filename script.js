@@ -1,170 +1,73 @@
-
-// 1. SAMPLE 
-const inventory = [
-  { id: "P001", productName: "Laptop Pro 15", category: "Electronics", location: "Nairobi", price: "$850", status: "In Stock" },
-  { id: "P002", productName: "Wireless Mouse", category: "Accessories", location: "Mombasa", price: "$25", status: "In Stock" },
-  { id: "P003", productName: "Mechanical Keyboard", category: "Accessories", location: "Nairobi", price: "$75", status: "In Stock" },
-  { id: "P004", productName: "27-inch Monitor", category: "Electronics", location: "Kisumu", price: "$300", status: "Low Stock" },
-  { id: "P005", productName: "USB-C Hub Adapter", category: "Accessories", location: "Nairobi", price: "$40", status: "In Stock" }
-];
-
-// GUARANTEED SEARCH ALGORITHM
-
-function searchInventory(userInput, dataList) {
-  const rawQuery = userInput.toLowerCase().trim();
-
-  // If query is empty, return empty set
-  if (!rawQuery) {
-    return { isFallback: false, items: [] };
-  }
-
-  // Split query into individual search terms (e.g. "laptop nairobi" -> ["laptop", "nairobi"])
-  const queryTokens = rawQuery.split(/\s+/);
-
-  //  Strict/Partial Match - Matches items where ALL tokens match name, category, or location
-  let results = dataList.filter(item => {
-    const itemText = `${item.productName} ${item.category} ${item.location}`.toLowerCase();
-    return queryTokens.every(token => itemText.includes(token));
-  });
-
-  //  Broad Match - If strict match fails, match items containing ANY of the terms
-  if (results.length === 0) {
-    results = dataList.filter(item => {
-      const itemText = `${item.productName} ${item.category} ${item.location}`.toLowerCase();
-      return queryTokens.some(token => itemText.includes(token));
-    });
-  }
-
-  // Location Match - Check if any word matches a city/location name specifically
-  if (results.length === 0) {
-    const matchedLocation = queryTokens.find(token =>
-      dataList.some(item => item.location.toLowerCase().includes(token))
-    );
-
-    if (matchedLocation) {
-      results = dataList.filter(item => item.location.toLowerCase().includes(matchedLocation));
-    }
-  }
-
-  //  Guaranteed Fallback - Show top featured items so the page is never blank
-  if (results.length === 0) {
-    return {
-      isFallback: true,
-      message: "No exact match found for your search. Here are popular products available:",
-      items: dataList.slice(0, 3)
-    };
-  }
-
-  return {
-    isFallback: false,
-    items: results
-  };
-}
-
-function renderProducts(searchResult, containerElement) {
-  containerElement.innerHTML = "";
-
-  // Show friendly notification if using fallback recommendations
-  if (searchResult.isFallback) {
-    const notice = document.createElement("div");
-    notice.className = "hint";
-    notice.style.marginBottom = "16px";
-    notice.style.color = "var(--orange)";
-    notice.style.fontWeight = "500";
-    notice.textContent = searchResult.message;
-    containerElement.appendChild(notice);
-  }
-
-  if (searchResult.items.length === 0) {
-    containerElement.innerHTML = `<p class="hint">Please enter a product name or location to search.</p>`;
-    return;
-  }
-
-  // Build product cards grid
-  searchResult.items.forEach(product => {
-    const card = document.createElement("div");
-    card.className = "tool-card";
-    card.innerHTML = `
-      <div class="tool-card-head">
-        <div>
-          <div class="tool-tag">
-            <span class="dot ${product.status === 'In Stock' ? 'dot-teal' : 'dot-orange'}"></span>
-            ${product.status}
-          </div>
-          <h2>${product.productName}</h2>
-        </div>
-      </div>
-      <div class="tool-card-body">
-        <p><strong>Category:</strong> ${product.category}</p>
-        <p><strong>Location:</strong> ${product.location}</p>
-        <p><strong>Price:</strong> ${product.price}</p>
-      </div>
-    `;
-    containerElement.appendChild(card);
-  });
-}
-
-// ==========================================
-// 4. EVENT LISTENERS & INITIALIZATION
-// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  const searchForm = document.querySelector("#search-form") || document.querySelector("form");
-  const searchInput = document.querySelector("#search-input") || document.querySelector("input[type='text']");
-  const resultsContainer = document.querySelector("#results-container") || document.querySelector(".tools-grid");
 
-  if (searchForm) {
-    // 1. PREVENT PAGE RELOAD
-    searchForm.addEventListener("submit", (e) => {
-      e.preventDefault(); // Prevents the browser from jumping or refreshing the page
+  // ==========================================
+  // 1. TOOL 01: ORDER STATUS LOOKUP
+  // ==========================================
+  const orderForm = document.getElementById("order-form");
+  const orderResult = document.getElementById("order-result");
 
-      const query = searchInput ? searchInput.value.trim() : "";
-
-      // 2. CHECK FOR EMPTY INPUT
-      if (!query) {
-        alert("Please enter a product name or location before searching.");
-        return;
-      }
-
-      // Execute search
-      const searchResult = searchInventory(query, inventory);
-
-      // 3. ALERT USER IF NOTHING IS FOUND OR OUT OF STOCK
-      if (searchResult.isFallback) {
-        alert(`No exact match found for "${query}". Displaying available products instead.`);
-      }
-
-      // Render updated results smoothly without page reload
-      renderProducts(searchResult, resultsContainer);
-    });
-  }
-});
-
-    // Handle full form submission / enter key
-    if (searchForm) {
-      searchForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const searchResult = searchInventory(searchInput.value, inventory);
-        renderProducts(searchResult, resultsContainer);
-      });
-    }
-  }
-
-  // --- FAQ ACCORDION TOGGLE HANDLER ---
-  const faqQuestions = document.querySelectorAll(".faq-question");
-
-  faqQuestions.forEach(question => {
-    question.addEventListener("click", () => {
-      const faqItem = question.closest(".faq-item");
+  if (orderForm) {
+    orderForm.addEventListener("submit", (e) => {
+      e.preventDefault();
       
-      // Close all other accordions for clean accordion behavior
-      document.querySelectorAll(".faq-item").forEach(item => {
-        if (item !== faqItem) {
-          item.classList.remove("active");
-        }
-      });
+      const orderNumber = document.getElementById("order-number").value.trim();
+      const orderEmail = document.getElementById("order-email").value.trim();
 
-      // Toggle current accordion state
-      faqItem.classList.toggle("active");
+      // Simple handling - replace with your actual lookup function/data
+      orderResult.innerHTML = `
+        <div style="margin-top: 16px; padding: 12px; border-left: 4px solid #1e9488; background: #f4f6f8;">
+          <p style="margin: 0;"><strong>Status for ${orderNumber}:</strong> In Transit</p>
+          <p style="margin: 4px 0 0 0; font-size: 0.9em; color: #555;">Updates sent to ${orderEmail}</p>
+        </div>
+      `;
     });
-  });
+  }
+
+  // ==========================================
+  // 2. TOOL 02: PRODUCT AVAILABILITY
+  // ==========================================
+  const stockForm = document.getElementById("stock-form");
+  const stockResult = document.getElementById("stock-result");
+
+  if (stockForm) {
+    stockForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const query = document.getElementById("stock-query").value.trim();
+      const location = document.getElementById("stock-location").value;
+
+      // Simple handling - replace with your actual searchInventory() function
+      stockResult.innerHTML = `
+        <div style="margin-top: 16px; padding: 12px; border-left: 4px solid #1e9488; background: #f4f6f8;">
+          <p style="margin: 0;"><strong>Searching for:</strong> "${query}"</p>
+          <p style="margin: 4px 0 0 0; font-size: 0.9em; color: #555;">Location Filter: ${location.toUpperCase()}</p>
+        </div>
+      `;
+    });
+  }
+
+  // ==========================================
+  // 3. TOOL 03: RETURNS & REFUND REQUEST
+  // ==========================================
+  const fallbackForm = document.getElementById("support-fallback-form");
+  const fallbackConfirmation = document.getElementById("fallback-confirmation");
+
+  if (fallbackForm) {
+    fallbackForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const order = document.getElementById("fallback-order").value.trim();
+      const item = document.getElementById("fallback-item").value.trim();
+
+      fallbackConfirmation.innerHTML = `
+        <div style="margin-top: 16px; padding: 12px; border-left: 4px solid #e05d38; background: #f4f6f8;">
+          <p style="margin: 0;"><strong>Return Request Submitted!</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 0.9em; color: #555;">Ticket opened for order #${order} (${item}). Check your email for confirmation.</p>
+        </div>
+      `;
+
+      fallbackForm.reset();
+    });
+  }
+
 });
