@@ -69,11 +69,11 @@
               </div>
               <button type="submit" class="btn btn-dark btn-block">Check order status</button>
             </form>
-            <div id="order-result"></div>
+            <div id="order-result" class="results-box"></div>
           </div>
         </article>
 
-        <!--  PRODUCT AVAILABILITY -->
+        <!-- PRODUCT AVAILABILITY -->
         <article class="tool-card">
           <div class="tool-card-head">
             <div>
@@ -103,7 +103,7 @@
               </div>
               <button type="submit" class="btn btn-dark btn-block">Check stock</button>
             </form>
-            <div id="stock-result"></div>
+            <div id="stock-result" class="results-box"></div>
           </div>
         </article>
 
@@ -161,20 +161,8 @@
               <button type="submit" class="btn btn-dark btn-block">Submit return request</button>
             </div>
           </form>
-          <div id="fallback-confirmation"></div>
+          <div id="fallback-confirmation" class="results-box"></div>
         </div>
-<!-- Example Tool Form -->
-<form id="order-lookup-form">
-  <div class="field">
-    <label for="order-input">Order Status Lookup</label>
-    <input type="text" id="order-input" placeholder="Enter Order ID or Product Name" required />
-  </div>
-  <button type="submit" class="btn btn-teal">Check Status</button>
-</form>
-
-<!-- Results Container (Must be directly below or inside the card) -->
-<div id="order-results" class="results-box" style="margin-top: 20px;"></div>
-        
       </article>
 
       <!-- ROUTING REFERENCE -->
@@ -209,27 +197,29 @@
   </section>
 
   <!-- FAQ SECTION -->
-<div class="faq-grid">
-  <div class="faq-item">
-    <button class="faq-question"><span>How long does delivery take?</span><span class="faq-icon">+</span></button>
-    <div class="faq-answer"><p>Standard delivery takes 1–3 business days within major hubs (Nairobi, Mombasa, Kisumu) and 3–5 days for upcountry areas.</p></div>
-  </div>
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question"><span>How long does delivery take?</span><span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Standard delivery takes 1–3 business days within major hubs (Nairobi, Mombasa, Kisumu) and 3–5 days for upcountry areas.</p></div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question"><span>How do I track my order?</span><span class="faq-icon">+</span></button>
-    <div class="faq-answer"><p>Use Tool 01 above! Enter your order number (e.g., ORD-8419) and email address to view live tracking details.</p></div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question"><span>How do I track my order?</span><span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Use Tool 01 above! Enter your order number (e.g., ORD-8419) and email address to view live tracking details.</p></div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question"><span>What is your returns window?</span><span class="faq-icon">+</span></button>
-    <div class="faq-answer"><p>We offer a 30-day return window from the date of delivery. Items must be unused and in original packaging.</p></div>
-  </div>
+        <div class="faq-item">
+          <button class="faq-question"><span>What is your returns window?</span><span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>We offer a 30-day return window from the date of delivery. Items must be unused and in original packaging.</p></div>
+        </div>
 
-  <div class="faq-item">
-    <button class="faq-question"><span>How long does a refund take to process?</span><span class="faq-icon">+</span></button>
-    <div class="faq-answer"><p>Once received and inspected by our team, refunds are processed within 24 to 48 hours to your original payment method.</p></div>
-  </div>
-</div>
+        <div class="faq-item">
+          <button class="faq-question"><span>How long does a refund take to process?</span><span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Once received and inspected by our team, refunds are processed within 24 to 48 hours to your original payment method.</p></div>
+        </div>
+      </div>
 
       <div class="contact-banner">
         <p>Still need help? Our support team is available <strong>Mon–Sat, 8 AM – 8 PM EAT</strong>.</p>
